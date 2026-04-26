@@ -1,94 +1,155 @@
-import React, { useState } from "react";
-import LoginLeftSide from "./LoginLeftSide";
-import { Link } from "react-router-dom";
-import { ArrowLeftIcon, EyeIcon, EyeOffIcon, Loader2Icon } from "lucide-react";
+import React, { useState } from "react"
+import LoginLeftSide from "./LoginLeftSide"
+import { Link } from "react-router-dom"
+import { ArrowLeftIcon, EyeIcon, EyeOffIcon, Loader2Icon, AlertCircleIcon } from "lucide-react"
 
 const LoginForm = ({ role, title, subtitle }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail]             = useState("")
+  const [password, setPassword]       = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError]             = useState("")
+  const [loading, setLoading]         = useState(false)
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-  };
+    e.preventDefault()
+    // your auth logic here
+  }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       <LoginLeftSide />
 
-      {/* Right Panel */}
-      <div className="flex-1 flex items-center justify-center p-10 sm:p-12 lg:p-16 bg-[#E6E6E6]">
-        <div className="w-full">
+      {/*  Right Panel  */}
+      <div
+        className="flex-1 flex items-center justify-center p-10 sm:p-12 lg:p-16"
+        style={{ background: '#090e18', minHeight: '100vh' }}
+      >
+        <div className="w-full max-w-sm">
 
           {/* Back link */}
           <Link
             to="/login"
-            className="inline-flex items-center gap-1.5 text-slate-400 hover:text-slate-600 text-xs mb-8 transition-colors"
+            className="inline-flex items-center gap-1.5 mb-8 transition-colors duration-150"
+            style={{ color: 'rgba(244,240,232,0.3)', fontSize: 12, fontFamily: "'Outfit', sans-serif" }}
+            onMouseEnter={e => e.currentTarget.style.color = 'rgba(244,240,232,0.65)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'rgba(244,240,232,0.3)'}
           >
-            <ArrowLeftIcon size={14} strokeWidth={1.5} />
+            <ArrowLeftIcon size={13} strokeWidth={1.5} />
             Back to portals
           </Link>
 
           {/* Header */}
           <div className="mb-7">
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', color: '#6366f1', textTransform: 'uppercase', marginBottom: 8 }}>
-              {role}
-            </p>
-            <h1 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: '#0f172a', lineHeight: 1.15, marginBottom: 6 }}>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-px h-3" style={{ background: '#4f8ef7' }} />
+              <p className="text-[11px] font-medium uppercase tracking-[0.12em]"
+                style={{ color: '#4f8ef7', fontFamily: "'Outfit', sans-serif" }}>
+                {role}
+              </p>
+            </div>
+            <h1 style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: 32,
+              fontWeight: 300,
+              color: '#f4f0e8',
+              lineHeight: 1.1,
+              marginBottom: 6,
+            }}>
               {title}
             </h1>
-            <p style={{ fontSize: 13, fontWeight: 300, color: '#94a3b8', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 13, fontWeight: 300, color: 'rgba(244,240,232,0.4)', lineHeight: 1.65, fontFamily: "'Outfit', sans-serif" }}>
               {subtitle}
             </p>
           </div>
 
           {/* Error */}
           {error && (
-            <div className="mb-5 p-3.5 bg-rose-50 border border-rose-200 text-rose-600 text-xs rounded-lg flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-              {error}
+            <div className="mb-5 flex items-center gap-2.5 p-3.5 rounded-xl"
+              style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.18)' }}>
+              <AlertCircleIcon size={14} strokeWidth={1.5} style={{ color: '#f87171', flexShrink: 0 }} />
+              <p className="text-[12.5px]" style={{ color: '#f87171', fontFamily: "'Outfit', sans-serif" }}>{error}</p>
             </div>
           )}
 
           {/* Form */}
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+
             {/* Email */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-slate-500 tracking-wide">
+              <label className="text-[11.5px] font-medium uppercase tracking-[0.08em]"
+                style={{ color: 'rgba(244,240,232,0.35)', fontFamily: "'Outfit', sans-serif" }}>
                 Email address
               </label>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 required
                 placeholder="johndoe@example.com"
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg text-sm font-light text-slate-800 placeholder:text-slate-300 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-colors"
+                className="w-full px-4 py-3 rounded-xl text-[13.5px] outline-none transition-all duration-150"
+                style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(244,240,232,0.08)',
+                  color: '#f4f0e8',
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 300,
+                }}
+                onFocus={e => {
+                  e.target.style.borderColor = 'rgba(79,142,247,0.4)'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(79,142,247,0.08)'
+                  e.target.style.background = 'rgba(79,142,247,0.04)'
+                }}
+                onBlur={e => {
+                  e.target.style.borderColor = 'rgba(244,240,232,0.08)'
+                  e.target.style.boxShadow = 'none'
+                  e.target.style.background = 'rgba(255,255,255,0.04)'
+                }}
               />
             </div>
 
             {/* Password */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-slate-500 tracking-wide">
+              <label className="text-[11.5px] font-medium uppercase tracking-[0.08em]"
+                style={{ color: 'rgba(244,240,232,0.35)', fontFamily: "'Outfit', sans-serif" }}>
                 Password
               </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   required
                   placeholder="••••••••"
-                  className="w-full px-3.5 py-2.5 pr-10 border border-slate-200 rounded-lg text-sm font-light text-slate-800 placeholder:text-slate-300 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/10 transition-colors"
+                  className="w-full px-4 py-3 pr-11 rounded-xl text-[13.5px] outline-none transition-all duration-150"
+                  style={{
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(244,240,232,0.08)',
+                    color: '#f4f0e8',
+                    fontFamily: "'Outfit', sans-serif",
+                    fontWeight: 300,
+                  }}
+                  onFocus={e => {
+                    e.target.style.borderColor = 'rgba(79,142,247,0.4)'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(79,142,247,0.08)'
+                    e.target.style.background = 'rgba(79,142,247,0.04)'
+                  }}
+                  onBlur={e => {
+                    e.target.style.borderColor = 'rgba(244,240,232,0.08)'
+                    e.target.style.boxShadow = 'none'
+                    e.target.style.background = 'rgba(255,255,255,0.04)'
+                  }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 transition-colors"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 transition-colors duration-150"
+                  style={{ color: 'rgba(244,240,232,0.25)' }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'rgba(244,240,232,0.6)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(244,240,232,0.25)'}
                 >
-                  {showPassword ? <EyeOffIcon size={16} strokeWidth={1.5} /> : <EyeIcon size={16} strokeWidth={1.5} />}
+                  {showPassword
+                    ? <EyeOffIcon size={15} strokeWidth={1.5} />
+                    : <EyeIcon size={15} strokeWidth={1.5} />}
                 </button>
               </div>
             </div>
@@ -97,21 +158,38 @@ const LoginForm = ({ role, title, subtitle }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 mt-1 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-lg disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3 mt-1 rounded-xl text-[13.5px] font-medium flex items-center justify-center gap-2 transition-all duration-150 disabled:opacity-50"
+              style={{
+                background: '#3b82f6',
+                color: '#fff',
+                fontFamily: "'Outfit', sans-serif",
+                boxShadow: '0 4px 24px rgba(59,130,246,0.18)',
+              }}
+              onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#2563eb' }}
+              onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#3b82f6' }}
             >
               {loading && <Loader2Icon size={15} className="animate-spin" />}
               Sign in
             </button>
           </form>
 
+          {/* Security note */}
+          <div className="flex items-center gap-2 mt-6 mb-6 px-3 py-2 rounded-lg"
+            style={{ background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.1)' }}>
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none" className="shrink-0">
+              <path d="M6 1L2 3v3c0 2.5 1.8 4.7 4 5.4C8.2 10.7 10 8.5 10 6V3L6 1Z"
+                stroke="#10b981" strokeWidth="1" fill="none"/>
+            </svg>
+          </div>
+
           {/* Footer */}
-          <p className="text-xs text-slate-500 mt-6">
-            © {new Date().getFullYear()} WorkSphere. All rights reserved.
+          <p className="text-[11px]" style={{ color: 'rgba(244,240,232,0.18)', fontFamily: "'Outfit', sans-serif" }}>
+            © {new Date().getFullYear()} WorkSpace. All rights reserved.
           </p>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

@@ -7,7 +7,7 @@ import {
   SettingsIcon, UserIcon, XIcon, ShieldCheckIcon,
 } from 'lucide-react'
 
-const role = "ADMIN" || "EMPLOYEE"; 
+const role = "" || "EMPLOYEE"; 
 
 const navItems = [
   { name: "Dashboard",  href: "/dashboard",  icon: LayoutGridIcon },
@@ -19,7 +19,7 @@ const navItems = [
   { name: "Settings",   href: "/settings",   icon: SettingsIcon },
 ];
 
-/* ─── small reusable nav link ─────────────────────────────────────────────── */
+/*  small reusable nav link  */
 const NavLink = ({ item, pathname }) => {
   const isActive = pathname.startsWith(item.href);
   return (

@@ -172,16 +172,6 @@ const LoginForm = ({ role, title, subtitle }) => {
               Sign in
             </button>
           </form>
-
-          {/* Security note */}
-          <div className="flex items-center gap-2 mt-6 mb-6 px-3 py-2 rounded-lg"
-            style={{ background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.1)' }}>
-            <svg width="11" height="11" viewBox="0 0 12 12" fill="none" className="shrink-0">
-              <path d="M6 1L2 3v3c0 2.5 1.8 4.7 4 5.4C8.2 10.7 10 8.5 10 6V3L6 1Z"
-                stroke="#10b981" strokeWidth="1" fill="none"/>
-            </svg>
-          </div>
-
           {/* Footer */}
           <p className="text-[11px]" style={{ color: 'rgba(244,240,232,0.18)', fontFamily: "'Outfit', sans-serif" }}>
             © {new Date().getFullYear()} WorkSpace. All rights reserved.

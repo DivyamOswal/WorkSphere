@@ -7,7 +7,7 @@ import {
   SettingsIcon, UserIcon, XIcon, ShieldCheckIcon,
 } from 'lucide-react'
 
-const role = "" || "EMPLOYEE"; 
+const role = "ADMIN" || "EMPLOYEE"; 
 
 const navItems = [
   { name: "Dashboard",  href: "/dashboard",  icon: LayoutGridIcon },

@@ -55,7 +55,7 @@ const StatCard = ({ icon: Icon, label, description, value, accent }) => {
       hover:border-white/[0.13] hover:bg-[#111d2e]
       transition-all duration-200 cursor-default
     ">
-      {/* Top row — icon + value */}
+      {/* Top row - icon + value */}
       <div className="flex items-start justify-between mb-4">
         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${a.icon}`}>
           <Icon size={18} strokeWidth={1.6} />
@@ -67,7 +67,7 @@ const StatCard = ({ icon: Icon, label, description, value, accent }) => {
 
       {/* Value */}
       <p className="text-3xl font-semibold text-slate-100 tracking-tight leading-none mb-1">
-        {value ?? '—'}
+        {value ?? '-'}
       </p>
 
       {/* Labels */}

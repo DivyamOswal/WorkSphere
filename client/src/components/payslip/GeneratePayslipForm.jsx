@@ -103,7 +103,7 @@ const GeneratePayslipForm = ({ employees = [], onSuccess }) => {
               <option value=''>Select employee</option>
               {employees.map(emp => (
                 <option key={emp.id} value={emp.id}>
-                  {emp.firstName} {emp.lastName} — {emp.position}
+                  {emp.firstName} {emp.lastName} - {emp.position}
                 </option>
               ))}
             </select>

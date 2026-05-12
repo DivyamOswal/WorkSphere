@@ -13,7 +13,7 @@ const Settings = () => {
   const fetchProfile = async () => {
     setProfile(dummyProfileData)
     // Fix: was setTimeout(()=>{ setTimeout(()=>{ setLoading(false) },1000) })
-    // Outer setTimeout had no delay so fired immediately — just one is needed
+    // Outer setTimeout had no delay so fired immediately - just one is needed
     setTimeout(() => setLoading(false), 1000)
   }
 

@@ -122,7 +122,7 @@ const LeaveHistory = ({ leaves = [], isAdmin, onUpdate }) => {
                         style={{ color: 'var(--text-muted)' }}
                         title={leave.reason}
                       >
-                        {leave.reason || '—'}
+                        {leave.reason || '-'}
                       </span>
                     </td>
 

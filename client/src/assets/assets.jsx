@@ -304,7 +304,7 @@ export function getWorkingHoursDisplay(record) {
         const mins = Math.round((diffHours - hrs) * 60);
         return `${hrs}h ${mins}m (ongoing)`;
     }
-    return "—";
+    return "-";
 }
 
 export function getDayTypeDisplay(record) {
@@ -323,5 +323,5 @@ export function getDayTypeDisplay(record) {
     if (record.checkIn && !record.checkOut) {
         return { label: "In Progress", className: "bg-indigo-100 text-indigo-700" };
     }
-    return { label: "—", className: "" };
+    return { label: "-", className: "" };
 }

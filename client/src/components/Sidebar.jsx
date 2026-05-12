@@ -87,7 +87,7 @@ const Sidebar = () => {
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-medium text-slate-100 tracking-[0.01em]">WorkSpace</p>
+          <p className="text-[13px] font-medium text-slate-100 tracking-[0.01em]">WorkSphere</p>
           <p className="text-[10px] text-slate-500 mt-px tracking-widest uppercase">Employee Management</p>
         </div>
 

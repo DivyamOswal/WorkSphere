@@ -12,7 +12,7 @@ const statConfig = [
     key: 'totalEmployees',
     icon: UserIcon,
     label: 'Total Employees',
-    description: 'Active WorkSpace',
+    description: 'Active WorkSphere',
     accent: 'blue',
   },
   {

@@ -174,7 +174,7 @@ const LoginForm = ({ role, title, subtitle }) => {
           </form>
           {/* Footer */}
           <p className="text-[11px]" style={{ color: 'rgba(244,240,232,0.18)', fontFamily: "'Outfit', sans-serif" }}>
-            © {new Date().getFullYear()} WorkSpace. All rights reserved.
+            © {new Date().getFullYear()} WorkSphere. All rights reserved.
           </p>
         </div>
       </div>

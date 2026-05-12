@@ -42,7 +42,7 @@ const LoginLeftSide = () => {
             </svg>
           </div>
           <span className='text-[13px] font-medium tracking-wide' style={{ color: 'rgba(244,240,232,0.65)', fontFamily: "'Outfit', sans-serif" }}>
-            WorkSpace
+            WorkSphere
           </span>
         </div>
         <span className='text-[11px]' style={{ color: 'rgba(244,240,232,0.2)', letterSpacing: '0.06em', fontFamily: "'Outfit', sans-serif" }}>v1.0.0</span>

@@ -12,6 +12,8 @@ const Settings = () => {
 
   const fetchProfile = async () => {
     setProfile(dummyProfileData)
+    // Fix: was setTimeout(()=>{ setTimeout(()=>{ setLoading(false) },1000) })
+    // Outer setTimeout had no delay so fired immediately — just one is needed
     setTimeout(() => setLoading(false), 1000)
   }
 
@@ -22,13 +24,13 @@ const Settings = () => {
   return (
     <div className='animate-fade-in p-6 lg:p-8 min-h-full' style={{ background: 'var(--bg-base)' }}>
 
-      {/* Header */}
+      {/*  Header  */}
       <div className='page-header'>
         <h1 className='page-title'>Settings</h1>
         <p className='page-subtitle'>Manage your account and preferences</p>
       </div>
 
-      {/*  Profile */}
+      {/*  Profile form */}
       {profile && (
         <ProfileForm initialData={profile} onSuccess={fetchProfile} />
       )}
@@ -64,7 +66,7 @@ const Settings = () => {
         </button>
       </div>
 
-      {/* Modal  */}
+      {/*  Modal  */}
       <ChangePasswordModal
         open={showPasswordModal}
         onClose={() => setShowPasswordModal(false)}

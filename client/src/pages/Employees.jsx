@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { dummyEmployeeData, DEPARTMENTS } from "../assets/assets";
+import {DEPARTMENTS } from "../assets/assets";
 import {
   PlusIcon,
   SearchIcon,
@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import EmployeeCard from "../components/EmployeeCard";
 import EmployeeForm from "../components/EmployeeForm";
+import api from "../api/axios";
 
 /*  Spinner  */
 const Spinner = () => (
@@ -127,14 +128,16 @@ const Employees = () => {
   const [editEmployee, setEditEmployee] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
-  const fetchEmployees = useCallback(() => {
-    setLoading(true);
-    setEmployees(
-      dummyEmployeeData.filter((emp) =>
-        selectedDept ? emp.department === selectedDept : true,
-      ),
-    );
-    setTimeout(() => setLoading(false), 500);
+  const fetchEmployees = useCallback(async() => {
+    try {
+      const url = selectedDept ? `/employees?department=${selectedDept}` : "/employees"
+      const res = await api.get(url)
+      setEmployees(res.data)
+    } catch (error) {
+      console.error("Failed to fetch employees")
+    }finally{
+      setLoading(false)
+    }
   }, [selectedDept]);
 
   useEffect(() => {
@@ -237,11 +240,11 @@ const Employees = () => {
         ) : (
           filtered.map((emp) => (
             <EmployeeCard
-              key={emp.id}
+              key={emp._id}
               employee={emp}
-              onDelete={(empToDelete) =>
+              onDelete={(deleteId) =>
                 setEmployees((prev) =>
-                  prev.filter((e) => e.id !== empToDelete.id),
+                  prev.filter((e) => e._id !== deleteId),
                 )
               }
               onEdit={setEditEmployee}

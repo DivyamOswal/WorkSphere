@@ -8,6 +8,8 @@ import {
   ShieldIcon,
   ChevronDownIcon,
 } from "lucide-react";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 /*  Reusable field wrapper  */
 const Field = ({ label, children, span2 = false }) => (
@@ -71,7 +73,23 @@ const EmployeeForm = ({ initialData, onSuccess, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // your submit logic here
+    setLoading(true)
+    const formData = new FormData(e.currentTarget)
+    if(isEditMode){
+      const pwd = formData.get("password")
+      if(!pwd) formData.delete("password")
+    }
+
+    try {
+      const url = isEditMode ? `/employees/${initialData._id}` : "/employees"
+      const method = isEditMode ? "put" : "post"
+      await api[method](url, formData)
+      onSuccess ? onSuccess() : navigate("/employees")
+    } catch (error) {
+      toast.error(error.response?.data?.error || error.message)
+    }finally{
+      setLoading(false)
+    }
   };
 
   return (
@@ -145,7 +163,7 @@ const EmployeeForm = ({ initialData, onSuccess, onCancel }) => {
         <Field label="Department">
           <div className="relative">
             <select
-              name="department"
+              name="department" required
               defaultValue={initialData?.department || ""}
             >
               <option value="">Select Department</option>

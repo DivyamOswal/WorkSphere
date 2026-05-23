@@ -1,5 +1,7 @@
 import { PencilIcon, Trash2Icon, MailIcon, BriefcaseIcon } from "lucide-react";
 import React, { useState } from "react";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 const accents = [
   { bg: "rgba(59,130,246,0.12)", text: "#60a5fa", strip: "#3b82f6" },
@@ -26,7 +28,7 @@ const hashId = (id) => {
 const EmployeeCard = ({ employee, onDelete, onEdit }) => {
   const [deleting, setDeleting] = useState(false);
 
-  const accent = accents[hashId(employee.id)];
+  const accent = accents[hashId(employee._id)];
   const initials =
     `${employee.firstName?.[0] ?? ""}${employee.lastName?.[0] ?? ""}`.toUpperCase();
   const status = statusMap[employee.status] ?? statusMap["Active"];
@@ -34,11 +36,11 @@ const EmployeeCard = ({ employee, onDelete, onEdit }) => {
   const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to delete this employee?"))
       return;
-    setDeleting(true);
     try {
-      await onDelete?.(employee);
-    } finally {
-      setDeleting(false);
+      await api.delete(`/employees/${employee._id}`)
+      onDelete(employee._id)
+    } catch (err) {
+      toast.error(err.response?.data?.error || err.message)
     }
   };
 

@@ -1,30 +1,31 @@
-import { useEffect, useState } from "react"
-import { dummyAdminDashboardData, dummyEmployeeDashboardData } from "../assets/assets"
+import { useCallback, useEffect, useState } from "react"
 import Loading from "../components/Loading"
 import EmployeeDashboard from "../components/EmployeeDashboard"
 import AdminDashboard from "../components/AdminDashboard"
 import { AlertCircleIcon, RefreshCwIcon } from "lucide-react"
+import api from "../api/axios"
+import toast from "react-hot-toast"
 
 const Dashboard = () => {
   const [data, setData]       = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState(false)
 
-  const load = () => {
+  const load = useCallback(() => {
     setLoading(true)
     setError(false)
-    setTimeout(() => {
-      try {
-        setData(dummyAdminDashboardData)
-      } catch {
+    api.get("/dashboard")
+      .then((res) => setData(res.data))
+      .catch((err) => {
         setError(true)
-      } finally {
-        setLoading(false)
-      }
-    }, 1000)
-  }
+        toast.error(err.response?.data?.error || err?.message)
+      })
+      .finally(() => setLoading(false))
+  }, [])
 
-  useEffect(() => { load() }, [])
+  useEffect(() => {
+    load()
+  }, [load])
 
   /*  Loading  */
   if (loading) return <Loading />

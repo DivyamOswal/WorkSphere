@@ -22,7 +22,7 @@ const app = express()
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://work-sphere-rose.vercel.app/" 
+    "https://work-sphere-rose.vercel.app" 
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -33,8 +33,7 @@ app.options(/.*/, cors())
 app.use(express.json())
 app.use(multer().none())
 
-// DB Connection
-connectDB()
+
 
 // Routes
 app.get('/', (req, res) => {

@@ -33,7 +33,7 @@ export const getPayslip = async (req, res) => {
         const isAdmin = session.role === "ADMIN"
 
         if(isAdmin){
-            const payslip = (await Payslip.find().populate("employeeId")).sort({createdAt: -1})
+            const payslip = await Payslip.find().populate("employeeId").sort({createdAt: -1})
 
             const data = payslip.map((p)=>{
                 const obj = p.toObject()

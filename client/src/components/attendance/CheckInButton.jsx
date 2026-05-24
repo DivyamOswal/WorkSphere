@@ -22,7 +22,6 @@ const CheckInButton = ({ todayRecord, onAction }) => {
       setLoading(false)
     }
   };
-
   /*  Work day complete  */
   if (todayRecord?.checkOut) {
     return (
@@ -64,7 +63,7 @@ const CheckInButton = ({ todayRecord, onAction }) => {
     );
   }
 
-  const isCheckedIn = !!todayRecord?.isCheckedIn;
+  const isCheckedIn = !!todayRecord?.checkIn;
 
   /*  Clock in / out button  */
   const checkedInStyle = {

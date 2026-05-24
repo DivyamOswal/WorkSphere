@@ -1,5 +1,10 @@
 import app from "../server.js"
 import connectDB from "../config/db.js"
 
-await connectDB()
+try {
+  await connectDB()
+} catch (error) {
+  console.error("STARTUP ERROR:", error)
+}
+
 export default app

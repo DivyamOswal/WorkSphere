@@ -22,7 +22,7 @@ const app = express()
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://work-sphere-rose.vercel.app/login" 
+    "https://work-sphere-rose.vercel.app/" 
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],

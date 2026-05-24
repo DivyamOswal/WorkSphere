@@ -5,16 +5,25 @@ import CheckInButton from '../components/attendance/CheckInButton'
 import AttendanceStats from '../components/attendance/AttendanceStats'
 import AttendanceHistory from '../components/attendance/AttendanceHistory'
 import { AlertCircleIcon } from 'lucide-react'
+import api from '../api/axios'
+import toast from 'react-hot-toast'
 
 const Attendance = () => {
   const [history,   setHistory]   = useState([])
   const [loading,   setLoading]   = useState(true)
-  // Fix: isDelted → isDeleted (typo in original state setter name)
   const [isDeleted, setIsDeleted] = useState(false)
 
   const fetchData = useCallback(async () => {
-    setHistory(dummyAttendanceData)
-    setTimeout(() => setLoading(false), 1000)
+    try {
+      const res = await api.get("/attendance")
+      const json = res.data
+      setHistory(json.data || [])
+      if(json.employee?.isDeleted) setIsDeleted(true)
+    } catch (error) {
+      toast.error(error?.response?.data?.error || error?.message)
+    }finally{
+      setLoading(false)
+    }
   }, [])
 
   useEffect(() => { fetchData() }, [fetchData])

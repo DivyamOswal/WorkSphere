@@ -52,11 +52,15 @@ export const getLeaves = async (req, res) => {
         const session = req.session
         const isAdmin = session.role === "ADMIN"
 
-        if(isAdmin){
+        if (isAdmin) {
             const status = req.query.status
-            const where = status? {status} : {}
-            const leaves = (await LeaveApplication.find(where).populate("employeeId")).sort({createdAt:-1})
-            const data = leaves.map((l)=>{
+            const where = status ? { status } : {}
+            const leaves = await LeaveApplication
+                .find(where)
+                .populate("employeeId")
+                .sort({ createdAt: -1 })  
+
+            const data = leaves.map((l) => {
                 const obj = l.toObject()
                 return {
                     ...obj,
@@ -65,18 +69,22 @@ export const getLeaves = async (req, res) => {
                     employeeId: obj.employeeId?._id?.toString()
                 }
             })
-            return res.json({data})
-        }else {
+            return res.json({ data })
+        } else {
             const employee = await Employee.findOne({
                 userId: session.userId
             }).lean()
 
-            if(!employee) return res.status(404).json({error: "Not found"})
-            const leaves = (await LeaveApplication.find({employeeId: employee._id})).sort({createdAt: -1})
-            return res.json({data:leaves, employee: {...employee, id: employee._id.toString()}})
+            if (!employee) return res.status(404).json({ error: "Not found" })
+
+            const leaves = await LeaveApplication
+                .find({ employeeId: employee._id })
+                .sort({ createdAt: -1 })  
+            return res.json({ data: leaves, employee: { ...employee, id: employee._id.toString() } })
         }
     } catch (error) {
-        return res.status(500).json({error: "Failed"})
+        console.error("getLeaves error:", error) 
+        return res.status(500).json({ error: "Failed" })
     }
 }
 

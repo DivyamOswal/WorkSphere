@@ -11,13 +11,13 @@ export const inngest = new Inngest({ id: "worksphere" });
 const autoCheckOut = inngest.createFunction(
     {id: "auto-check-out", triggers: [{event: "employee/check-out"}]} ,
     async ({event, step}) => {
-        const {employeeId, attendanceId} = event.data
+        const {employeeId, attendance:attendanceId} = event.data
         // Wait for 9 hours
         await step.sleepUntil("wait-for-the-9-hours", new Date(new Date().getTime() + 9 * 60 * 60 * 1000))
 
         // get Attendance data
         let attendance = await Attendance.findById(attendanceId)
-        if(!attendance?.checkout){
+        if(!attendance?.checkOut){
             // get Employee data
             const employee = await Employee.findById(employeeId)
 
@@ -43,11 +43,11 @@ const autoCheckOut = inngest.createFunction(
             await step.sleepUntil("wait-for-the-1-hour", new Date(new Date().getTime() + 1 * 60 * 60 * 1000))
 
             attendance = await Attendance.findById(attendanceId)
-            if(!attendance?.checkout){
-                attendance.checkout = new Date(new Date(attendance.checkIn).getTime() + 4 * 60 * 60 * 1000)
+            if(!attendance?.checkOut){
+                attendance.checkOut = new Date(new Date(attendance.checkIn).getTime() + 4 * 60 * 60 * 1000)
                 attendance.workingHours = 4
                 attendance.dayType = "Half Day"
-                attendance.status = "Late"
+                attendance.status = "LATE"
                 await attendance.save( )
             }
         }
@@ -132,9 +132,9 @@ const attendanceReminderCron  = inngest.createFunction(
         // Step 6: Send reminder emails
         if(absentEmployees.length > 0){
             await step.run("send-reminder-emails", async ()=> {
-                const emailPromises = absentEmployes.map((emp)=>{
+                const emailPromises = absentEmployees.map((emp)=>{
                     // send email
-                    sendEmail({
+                    return sendEmail({
                         to: emp.email,
                         subject: `Attendance Reminder - Please Mark Your Attedance`,
                         body: `<div style="max-width: 600px; font-family: Arial, sans-serif;">
@@ -150,6 +150,7 @@ const attendanceReminderCron  = inngest.createFunction(
                             </div>`
                     })
                 })
+                await Promise.all(emailPromises)
             })
         }
         return {totalActive: activeEmployees.length, onLeave: onLeaveIds.length, checkedIn: checkedInIds.length, absent: absentEmployees.length}

@@ -24,7 +24,7 @@ app.use(express.json())
 app.use(multer().none())
 
 // DB Connection
-connectDB().catch(console.error)
+connectDB()
 
 // Routes
 app.get('/', (req, res) => {

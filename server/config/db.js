@@ -14,20 +14,4 @@ const connectDB = async () => {
   return cached.conn
 }
 
-export default connectDBimport mongoose from "mongoose";
-
-let cached = global.mongoose || { conn: null, promise: null }
-global.mongoose = cached
-
-const connectDB = async () => {
-  if (cached.conn) return cached.conn
-
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGODB_URI)
-  }
-
-  cached.conn = await cached.promise
-  return cached.conn
-}
-
 export default connectDB

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { dummyPayslipData } from "../assets/assets";
 import { format } from "date-fns";
+import api from "../api/axios";
 
 const PrintPayslip = () => {
   const { id } = useParams();
@@ -9,8 +9,7 @@ const PrintPayslip = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setPayslip(dummyPayslipData.find((slip) => slip._id === id));
-    setTimeout(() => setLoading(false), 800);
+    api.get(`/payslips/${id}`).then((res)=> setPayslip(res.data)).catch(console.error).finally(()=>setLoading(false))
   }, [id]);
 
   if (loading)

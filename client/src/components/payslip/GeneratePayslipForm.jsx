@@ -1,5 +1,7 @@
 import { Loader2Icon, PlusIcon, XIcon, ReceiptIcon } from 'lucide-react'
 import React, { useState } from 'react'
+import api from '../../api/axios'
+import toast from 'react-hot-toast'
 
 const MONTHS = [
   'January','February','March','April','May','June',
@@ -22,11 +24,17 @@ const GeneratePayslipForm = ({ employees = [], onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-      onSuccess?.()
+    const formData = new FormData(e.currentTarget)
+    const data = Object.fromEntries(formData.entries())
+    try {
+      await api.post('/payslips', data)
       setIsOpen(false)
-    }, 1000)
+      onSuccess()
+    } catch (error) {
+      toast.error(error.response?.data?.error || error?.message)
+    }finally{
+      setLoading(false)
+    }
   }
 
   // Trigger button
@@ -102,7 +110,7 @@ const GeneratePayslipForm = ({ employees = [], onSuccess }) => {
             <select name='employeeId' required>
               <option value=''>Select employee</option>
               {employees.map(emp => (
-                <option key={emp.id} value={emp.id}>
+                <option key={emp.id} value={emp._id}>
                   {emp.firstName} {emp.lastName} - {emp.position}
                 </option>
               ))}

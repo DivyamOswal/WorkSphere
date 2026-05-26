@@ -1,19 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { dummyEmployeeData, dummyPayslipData } from '../assets/assets'
 import Loading from '../components/Loading'
 import PayslipList from '../components/payslip/PayslipList'
 import GeneratePayslipForm from '../components/payslip/GeneratePayslipForm'
 import { ReceiptIcon } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import api from '../api/axios'
-import toast from "react-hot-toast"
+import toast from 'react-hot-toast'
 
 const Payslips = () => {
   const [payslips,  setPayslips]  = useState([])
   const [employees, setEmployees] = useState([])
   const [loading,   setLoading]   = useState(true)
-  const {user} = useAuth()
-  const isAdmin = user?.role === "ADMIN"
+  const { user } = useAuth()
+  const isAdmin = user?.role === 'ADMIN'
 
   const fetchPayslips = useCallback(async () => {
     try {
@@ -21,29 +20,32 @@ const Payslips = () => {
       setPayslips(res.data.data || [])
     } catch (error) {
       toast.error(error?.response?.data?.error || error?.message)
-    }finally{
+    } finally {
       setLoading(false)
+    }
+  }, [])
+
+  const fetchEmployees = useCallback(async () => {
+    try {
+      const res = await api.get('/employees')
+      setEmployees((res.data || []).filter(e => !e.isDeleted)) // ← res.data, not res.data.data
+    } catch (error) {
+      toast.error(error?.response?.data?.error || error?.message || 'Failed to load employees')
     }
   }, [])
 
   useEffect(() => { fetchPayslips() }, [fetchPayslips])
 
   useEffect(() => {
-     if (isAdmin) {
-    api
-      .get("/employees").then((res) =>setEmployees((res.data.data || []).filter((e) => !e.isDeleted))).catch(() => {});
-  }
-  }, [isAdmin])
+    if (isAdmin) fetchEmployees()
+  }, [isAdmin, fetchEmployees])
 
   if (loading) return <Loading />
 
   return (
     <div className='animate-fade-in p-6 lg:p-8 min-h-full' style={{ background: 'var(--bg-base)' }}>
-
-      {/*  Header  */}
       <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8'>
         <div>
-          {/* Eyebrow */}
           <div className='flex items-center gap-2 mb-2'>
             <ReceiptIcon size={13} strokeWidth={1.5} style={{ color: 'var(--accent)' }} />
             <span
@@ -64,7 +66,6 @@ const Payslips = () => {
         )}
       </div>
 
-      {/*  Payslip list  */}
       <PayslipList payslips={payslips} isAdmin={isAdmin} />
     </div>
   )

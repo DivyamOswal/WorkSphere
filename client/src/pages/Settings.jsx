@@ -1,33 +1,46 @@
-import React, { useEffect, useState } from 'react'
-import { dummyProfileData } from '../assets/assets'
-import Loading from '../components/Loading'
-import { LockIcon, ChevronRightIcon } from 'lucide-react'
-import ProfileForm from '../components/ProfileForm'
-import ChangePasswordModal from '../components/ChangePasswordModal'
+import React, { useEffect, useState } from "react";
+import { dummyProfileData } from "../assets/assets";
+import Loading from "../components/Loading";
+import { LockIcon, ChevronRightIcon } from "lucide-react";
+import ProfileForm from "../components/ProfileForm";
+import ChangePasswordModal from "../components/ChangePasswordModal";
+import { useAuth } from "../context/AuthContext";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 const Settings = () => {
-  const [profile,           setProfile]           = useState(null)
-  const [loading,           setLoading]           = useState(true)
-  const [showPasswordModal, setShowPasswordModal] = useState(false)
+  const {user} = useAuth()
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   const fetchProfile = async () => {
-    setProfile(dummyProfileData)
-    // Fix: was setTimeout(()=>{ setTimeout(()=>{ setLoading(false) },1000) })
-    // Outer setTimeout had no delay so fired immediately - just one is needed
-    setTimeout(() => setLoading(false), 1000)
-  }
+    try {
+      const res = await api.get("/profile")
+      const profile = res.data
+      if(profile) setProfile(profile)
+    } catch (err) {
+      toast.error(err?.response?.data?.error || err?.message)
+    }finally{
+      setLoading(false)
+    }
+  };
 
-  useEffect(() => { fetchProfile() }, [])
+  useEffect(() => {
+    fetchProfile();
+  }, [user]);
 
-  if (loading) return <Loading />
+  if (loading) return <Loading />;
 
   return (
-    <div className='animate-fade-in p-6 lg:p-8 min-h-full' style={{ background: 'var(--bg-base)' }}>
-
+    <div
+      className="animate-fade-in p-6 lg:p-8 min-h-full"
+      style={{ background: "var(--bg-base)" }}
+    >
       {/*  Header  */}
-      <div className='page-header'>
-        <h1 className='page-title'>Settings</h1>
-        <p className='page-subtitle'>Manage your account and preferences</p>
+      <div className="page-header">
+        <h1 className="page-title">Settings</h1>
+        <p className="page-subtitle">Manage your account and preferences</p>
       </div>
 
       {/*  Profile form */}
@@ -37,21 +50,34 @@ const Settings = () => {
 
       {/*  Change password card  */}
       <div
-        className='card flex items-center justify-between p-5 sm:p-6'
+        className="card flex items-center justify-between p-5 sm:p-6"
         style={{ borderRadius: 16, maxWidth: 560 }}
       >
-        <div className='flex items-center gap-4'>
+        <div className="flex items-center gap-4">
           <div
-            className='w-10 h-10 rounded-xl flex items-center justify-center shrink-0'
-            style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.18)' }}
+            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+            style={{
+              background: "rgba(139,92,246,0.1)",
+              border: "1px solid rgba(139,92,246,0.18)",
+            }}
           >
-            <LockIcon size={16} strokeWidth={1.6} style={{ color: '#a78bfa' }} />
+            <LockIcon
+              size={16}
+              strokeWidth={1.6}
+              style={{ color: "#a78bfa" }}
+            />
           </div>
           <div>
-            <p className='text-[13.5px] font-medium' style={{ color: 'var(--text-primary)' }}>
+            <p
+              className="text-[13.5px] font-medium"
+              style={{ color: "var(--text-primary)" }}
+            >
               Password
             </p>
-            <p className='text-[12px] mt-0.5' style={{ color: 'var(--text-subtle)' }}>
+            <p
+              className="text-[12px] mt-0.5"
+              style={{ color: "var(--text-subtle)" }}
+            >
               Update your account password
             </p>
           </div>
@@ -59,7 +85,7 @@ const Settings = () => {
 
         <button
           onClick={() => setShowPasswordModal(true)}
-          className='btn-secondary flex items-center gap-1.5 shrink-0'
+          className="btn-secondary flex items-center gap-1.5 shrink-0"
         >
           Change
           <ChevronRightIcon size={13} strokeWidth={2} />
@@ -72,7 +98,7 @@ const Settings = () => {
         onClose={() => setShowPasswordModal(false)}
       />
     </div>
-  )
-}
+  );
+};
 
-export default Settings
+export default Settings;

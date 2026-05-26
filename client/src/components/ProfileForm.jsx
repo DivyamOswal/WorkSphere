@@ -1,5 +1,6 @@
 import { Loader2Icon, SaveIcon, UserIcon, AlertCircleIcon, CheckCircle2Icon } from 'lucide-react'
 import React, { useState } from 'react'
+import api from '../api/axios'
 
 const Label = ({ children }) => (
   <label
@@ -30,11 +31,16 @@ const ProfileForm = ({ initialData, onSuccess }) => {
     setLoading(true)
     setError('')
     setMessage('')
-    setTimeout(() => {
-      setLoading(false)
-      setMessage('Profile updated successfully.')
+    const formdata = new FormData(e.currentTarget)
+    try {
+      await api.put("/profile", formdata)
+      setMessage("Profile updated succesfully")
       onSuccess?.()
-    }, 1000)
+    } catch (err) {
+      setError(err.response?.data?.error || err.message)
+    }finally{
+      setLoading(false)
+    }
   }
 
   return (
